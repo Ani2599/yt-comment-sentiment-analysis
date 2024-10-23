@@ -109,7 +109,7 @@ def log_confusion_matrix(cm, dataset_name):
 
 
 def main():
-    mlflow.set_tracking_uri("http://ec2-18-182-27-226.ap-northeast-1.compute.amazonaws.com:5000/")
+    mlflow.set_tracking_uri("http://ec2-54-196-109-131.compute-1.amazonaws.com:5000/")
 
     mlflow.set_experiment('dvc-pipeline-runs')
     
