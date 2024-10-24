@@ -4,6 +4,7 @@ import pickle
 import logging
 import yaml
 import mlflow
+import json
 import mlflow.sklearn
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -107,13 +108,40 @@ def log_confusion_matrix(cm, dataset_name):
     mlflow.log_artifact(cm_file_path)
     plt.close()
 
+def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
+    """Save the model run ID and path to a JSON file."""
+    try:
+        # Debug logging for input values
+        logger.debug(f"Saving model info with run_id: {run_id} and model_path: {model_path}")
+        
+        # Create a dictionary with the model information
+        model_info = {
+            "run_id": run_id,
+            "model_path": model_path
+        }
+        
+        # Check if file path is valid and print for debugging
+        abs_file_path = os.path.abspath(file_path)
+        logger.debug(f"Attempting to save model info to {abs_file_path}")
+
+        # Save the dictionary as a JSON file
+        with open(abs_file_path, 'w') as file:
+            json.dump(model_info, file, indent=4)
+        
+        logger.debug("Model info saved successfully to %s", abs_file_path)
+        print(f"Model info saved to {abs_file_path}")
+        
+    except Exception as e:
+        logger.error('Error occurred while saving the model info: %s', e)
+        print(f"Error: {e}")
+        raise
 
 def main():
-    mlflow.set_tracking_uri("http://ec2-54-196-109-131.compute-1.amazonaws.com:5000/")
+    mlflow.set_tracking_uri("http://ec2-18-182-27-226.ap-northeast-1.compute.amazonaws.com:5000/")
 
     mlflow.set_experiment('dvc-pipeline-runs')
     
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
         try:
             # Load parameters from YAML file
             root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
@@ -134,6 +162,13 @@ def main():
 
             # Log model and vectorizer
             mlflow.sklearn.log_model(model, "lgbm_model")
+            
+            artifact_uri = mlflow.get_artifact_uri()
+            model_path = f"{artifact_uri}/lgbm_model"
+
+            # Save model info
+            save_model_info(run.info.run_id, model_path, 'experiment_info.json')
+
             mlflow.log_artifact(os.path.join(root_dir, 'tfidf_vectorizer.pkl'))
 
             # Load test data
