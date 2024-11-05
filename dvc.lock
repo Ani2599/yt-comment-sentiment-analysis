@@ -64,7 +64,7 @@ stages:
       size: 4113191
     - path: tfidf_vectorizer.pkl
       hash: md5
-      md5: 647299f8ae878d3cd695b9108d0c6206
+      md5: dbc0abc53e2fea95f08c9308980928dd
       size: 384148
   model_evaluation:
     cmd: python src/model/model_evaluation.py
@@ -87,19 +87,19 @@ stages:
       size: 7121
     - path: tfidf_vectorizer.pkl
       hash: md5
-      md5: 647299f8ae878d3cd695b9108d0c6206
+      md5: dbc0abc53e2fea95f08c9308980928dd
       size: 384148
     outs:
     - path: experiment_info.json
       hash: md5
-      md5: 79cd43bfce9370e31e3dfeadac1e85e6
+      md5: 9a67db8a8c38377d26d9ea41fbc6966a
       size: 84
   register_model:
     cmd: python src/model/register_model.py
     deps:
     - path: experiment_info.json
       hash: md5
-      md5: 79cd43bfce9370e31e3dfeadac1e85e6
+      md5: 9a67db8a8c38377d26d9ea41fbc6966a
       size: 84
     - path: src/model/register_model.py
       hash: md5
