@@ -47,6 +47,7 @@ def test_generate_trend_graph_endpoint():
             {"timestamp": "2024-10-03", "sentiment": -1}
         ]
     }
+    
     response = requests.post(f"{BASE_URL}/generate_trend_graph", json=data)
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "image/png"
