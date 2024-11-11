@@ -109,6 +109,7 @@ jobs:
           nohup python flask_app/app.py &
 
       - name: Run Flask API tests
+        if: success()
         run: |
           pytest scripts/test_flask_api.py 
 
