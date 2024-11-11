@@ -1,8 +1,27 @@
 import pytest
 import requests
-import json
+import time
 
 BASE_URL = "http://localhost:5000"  # Replace with your deployed URL if needed
+
+# Function to check if the Flask server is up
+def server_is_up():
+    try:
+        response = requests.get(f"{BASE_URL}/")
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+@pytest.fixture(scope="module", autouse=True)
+def wait_for_server():
+    # Wait for the server to be ready before running tests
+    retries = 10
+    while retries > 0:
+        if server_is_up():
+            return
+        retries -= 1
+        time.sleep(2)  # Wait for 2 seconds before retrying
+    raise RuntimeError(f"Server at {BASE_URL} is not available after multiple retries")
 
 def test_predict_endpoint():
     data = {
@@ -51,4 +70,3 @@ def test_generate_trend_graph_endpoint():
     response = requests.post(f"{BASE_URL}/generate_trend_graph", json=data)
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "image/png"
-    
