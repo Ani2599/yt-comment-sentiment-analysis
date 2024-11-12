@@ -84,7 +84,7 @@ Testing is performed to ensure the following:
 
 ## Chrome Plugin
 
-The Chrome extension is stored in a separate repository, [yt-chrome-plugin-frontend](https://github.com/your-username/yt-chrome-plugin-frontend). It includes:
+The Chrome extension is stored in a separate repository, [yt-chrome-plugin-frontend](https://github.com/Ani2599/yt-chrome-plugin-frontend). It includes:
 - **popup.js**: JavaScript logic for plugin functionality.
 - **popup.html**: HTML for the plugin UI.
 - **manifest.json**: Metadata and permissions for the Chrome extension.
@@ -104,6 +104,13 @@ To install the extension:
 - **CI/CD**: GitHub Actions
 
 ## Authors
+
+- **Aniket**
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 
 - **Aniket**
 
